@@ -1,11 +1,10 @@
 class Cell
-    attr_reader :xaxis, :yaxis, :value
-    attr_writer :value
+    attr_accessor :xaxis, :yaxis, :value
 
     def initialize(xaxis, yaxis, value)
-        @xaxis = xaxis
-        @yaxis = yaxis
-        @value = value
+        self.xaxis = xaxis
+        self.yaxis = yaxis
+        self.value = value
     end
 end
 
@@ -13,40 +12,48 @@ class Tictactoe
     attr_accessor :cells
 
     def initialize
-        self.cells = {}
+        self.cells = []
         value = 1
         for y in 1..3
             for x in 1..3
                 newcell = Cell.new(x, y, value)
                 p newcell
-                self.cells["#{x},#{y}"] = newcell
+                self.cells << newcell
                 value += 1
             end
         end
     end
 
     def printTictactoe
-        for y in 1..3
-            for x in 1..3
-                line = self.cells["#{x},#{y}"].value.to_s + "|"
-                print line
-            end
-            print "\n"
-            puts "------"
+        self.cells.each_with_index do |cell, idx|          
+            line = cell.value.to_s + "|"
+            print line
+            if (idx+1) % 3 == 0
+                print "\n"
+                puts "------" 
+            end            
         end
     end
 
-    def isThereAWinners
+    def isThereAWinner
+        winner = ""
+        
 
     end
 
     def changeValue(value)
-        puts self.cells
-        puts self.cells.key(value)
-        self.cells[self.cells.key(value)] = "X"
+        cell = self.cells.select { |c| c.value == value }
+        unless cell.empty?
+            cell[0].value = "X"
+        end        
     end
 end
 
 TictactoeMain = Tictactoe.new
 TictactoeMain.printTictactoe
 TictactoeMain.changeValue(1)
+TictactoeMain.printTictactoe
+TictactoeMain.changeValue(2)
+TictactoeMain.printTictactoe
+TictactoeMain.changeValue(3)
+TictactoeMain.printTictactoe
